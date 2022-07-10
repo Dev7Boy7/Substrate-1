@@ -37,4 +37,21 @@ Nội dung:
       
  II - Thành phần kiến trúc của Subtrate :
  
+      Chia làm 2 thành phần : 
       
+      Runtime  
+      
+          - Là thành phần xây dựng lên các chức năng của chain 
+          
+          - FRAME 
+          
+              + Runtime modules : Gồm nhiều pallet , mỗi pallet thực hiện 1 chức năng riêng 
+              
+              + System module : Đại diện cho các kiểu dữ liệu , thông tin block , strorage, ... 
+              
+              + Support library : Thư viện hỗ trợ xây dựng các macro, type, traits 
+              
+      Outernode 
+      
+  
+  
