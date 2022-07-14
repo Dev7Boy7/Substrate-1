@@ -114,48 +114,45 @@ pub use super::*;
 			Ok(())
 		}
 	
-
 		#[pallet::weight(10_000 + T::DbWeight::get().writes(1))]
-		pub fn transfer_kitty(origin: OriginFor<T>,to: T::AccountId, dna: Vec<u8>) -> DispatchResult {
+			pub fn transfer_kitty(origin: OriginFor<T>,to: T::AccountId, dna: Vec<u8>) -> DispatchResult {
 		
-		let who = ensure_signed(origin)?;
+			let who = ensure_signed(origin)?;
 
 			// Check Kitty Exist ??
-		let kitty_id = <AllKitty<T>>::get(&dna);
-
-		ensure!(kitty_id.is_some(), <Error<T>>::KittyNotExist);
+			let kitty_id = <AllKitty<T>>::get(&dna);
+	
+			ensure!(kitty_id.is_some(), <Error<T>>::KittyNotExist);
 
 			// Check Kitty belong to ?? 
-		let kitty_own = <OwnerNft<T>>::get(&who);
+			let kitty_own = <OwnerNft<T>>::get(&who);
 
-		ensure!(kitty_own.contains(&dna), <Error<T>>::NotKittyOwner);
+			ensure!(kitty_own.contains(&dna), <Error<T>>::NotKittyOwner);
 
 			// Transfer
-		ensure!(who != to, <Error<T>>::CantTransferToYoursefl);
+			ensure!(who != to, <Error<T>>::CantTransferToYoursefl);
 
-		<OwnerNft<T>>::mutate(to.clone(), |abc| abc.push(dna.clone()));
+			<OwnerNft<T>>::mutate(to.clone(), |abc| abc.push(dna.clone()));
 
-		<OwnerNft<T>>::mutate(who.clone(), |abc| abc.retain(|cba| *cba != dna.clone()));	
+			<OwnerNft<T>>::mutate(who.clone(), |abc| abc.retain(|cba| *cba != dna.clone()));	
 
-		let mut kitty_transfer = <AllKitty<T>>::get(&dna).unwrap();
+			let mut kitty_transfer = <AllKitty<T>>::get(&dna).unwrap();
 
-		kitty_transfer.owner = to.clone();
+			kitty_transfer.owner = to.clone();
 
-		<AllKitty<T>>::insert(dna.clone(), kitty_transfer);
+			<AllKitty<T>>::insert(dna.clone(), kitty_transfer);
 
-		Ok(())
-
+			Ok(())
+			}
 		}
-	}
 
-impl<T> Pallet<T> {
-		pub fn gen_gender(dna: Vec<u8>) -> Result<Gender, Error<T>> {
+	impl<T> Pallet<T> {
+			pub fn gen_gender(dna: Vec<u8>) -> Result<Gender, Error<T>> {
 			let mut res = Gender::Female;
 			if dna.len() % 2 == 0 {
 				res = Gender::Male;
+			}
+			Ok(res)
 		}
-		Ok(res)
 	}
-
-}
 }
